@@ -2,6 +2,8 @@ import random
 import sys
 import os
 
+# ... (Оставьте CHOICES и RULES без изменений)
+
 class ScoreBoard:
     """Класс для управления счетом и сохранения результатов."""
     CHOICES = {
