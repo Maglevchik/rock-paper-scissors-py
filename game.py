@@ -2,8 +2,6 @@ import random
 import sys
 import os
 
-# Словарь допустимых ходов для удобства проверки
-
 class ScoreBoard:
     """Класс для управления счетом и сохранения результатов."""
     CHOICES = {
