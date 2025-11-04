@@ -1,0 +1,7 @@
+# Python files
+__pycache__/
+*.pyc
+# OS generated files
+.DS_Store
+# Game data
+scoreboard.txt
