@@ -2,10 +2,15 @@ import random
 import sys
 import os
 
-# ... (Оставьте CHOICES и RULES без изменений)
+# Словарь допустимых ходов для удобства проверки
 
 class ScoreBoard:
     """Класс для управления счетом и сохранения результатов."""
+    CHOICES = {
+        "r": "Камень",
+        "p": "Бумага",
+        "s": "Ножницы"
+    }
 
     FILENAME = "scoreboard.txt"
 
@@ -44,6 +49,43 @@ class ScoreBoard:
             self.ties += 1
         self._save_scores()
 
+    def get_user_choice(self):  # <-- Эта функция должна быть здесь
+        """
+        Получает ход пользователя.
+        Отображает доступные клавиши, проверяет ввод и обрабатывает выход из игры.
+        """
+        while True:
+            # Отображение доступных ходов для пользователя
+            print("\nСделайте свой ход:")
+            print("  (r) - Камень")
+            print("  (p) - Бумага")
+            print("  (s) - Ножницы")
+            print("  (q) - Выход из игры")
+
+            user_input = input("Ваш выбор: ").lower().strip()
+
+            if user_input == 'q':
+                # Обработка выхода из игры
+                print("Спасибо за игру! До свидания.")
+                sys.exit()  # Завершение программы
+
+            if user_input in self.CHOICES:
+                return user_input  # Возвращаем корректный ход
+            else:
+                # Обработка некорректного ввода
+                print("🛑 Некорректный ввод. Пожалуйста, выберите r, p, s или q.")
+
+    def get_computer_choice(self):
+        return random.choice(list(self.CHOICES.keys()))
+
+    def determine_winner(self, user_choice, computer_choice):
+        if user_choice > computer_choice:
+            return "user"
+        elif computer_choice > user_choice:
+            return "computer"
+        elif user_choice == computer_choice:
+            return "non wins"
+
     def display_score(self):
         """Отображает текущий счет."""
         print("\n=== ТЕКУЩИЙ СЧЕТ (С начала) ===")
@@ -62,16 +104,16 @@ def main_game_loop():
     scoreboard.display_score() # Отображение счета при старте
 
     while True:
-        user_choice = get_user_choice()
-        computer_choice = get_computer_choice()
-
-        result = determine_winner(user_choice, computer_choice)
+        user_choice = scoreboard.get_user_choice()
+        computer_choice = scoreboard.get_computer_choice()
+        print(f'user_choice = {user_choice}; computer_choice = {computer_choice}')
+        result = scoreboard.determine_winner(user_choice, computer_choice)
 
         if result == "user":
             print("🏆 Вы победили в этом раунде!")
         elif result == "computer":
             print("😔 Компьютер победил в этом раунде.")
-        else:
+        elif result == "non wins":
             print("🤝 Ничья!")
 
         # Обновление счета
